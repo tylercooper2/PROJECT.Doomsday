@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         barcodeController = new BarcodeController(findViewById(R.id.surface_view), findViewById(R.id.barcode_text), findViewById(R.id.itemTitleTextBox), getApplicationContext(), MainActivity.this);
-
-
     }
 
 
