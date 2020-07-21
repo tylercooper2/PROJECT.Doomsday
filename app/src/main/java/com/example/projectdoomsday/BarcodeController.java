@@ -18,8 +18,14 @@ import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.gson.JsonParser;
+import com.jayway.jsonpath.JsonPath;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class BarcodeController {
 
@@ -33,10 +39,11 @@ public class BarcodeController {
     private Context applicationContext;
     private Activity activity;
     private TextView itemTitleTextBox;
+    private JsonUtils jsonUtils;
 
     //TODO: Understand what exactly is going on
     //TODO: Understand why application context and activity are needed
-    public BarcodeController(View surfaceView, View barcodeText, View itemTitleTextBox, Context applicationContext, Activity activity)
+    public BarcodeController(View surfaceView, View barcodeText, View itemTitleTextBox, Context applicationContext, Activity activity, JsonUtils jsonUtils)
     {
         toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
         this.surfaceView = (SurfaceView) surfaceView;
@@ -44,6 +51,7 @@ public class BarcodeController {
         this.applicationContext = applicationContext;
         this.activity = activity;
         this.itemTitleTextBox = (TextView) itemTitleTextBox;
+        this.jsonUtils = jsonUtils;
 
         String test = "starting";
         this.itemTitleTextBox.setText(test);
@@ -120,7 +128,17 @@ public class BarcodeController {
 
                                 barcodeData = barcodes.valueAt(0).displayValue;
                                 barcodeText.setText(barcodeData);
-                                DatabaseAPIController.sendBarcodeID(barcodeData, applicationContext, itemTitleTextBox);
+
+                                if(jsonUtils.getItemValues().get(barcodeData) == null)
+                                {
+                                    DatabaseAPIController.sendBarcodeID(barcodeData, applicationContext, itemTitleTextBox, jsonUtils);
+                                    System.out.println("Calling API");
+                                }
+                                else
+                                {
+                                    System.out.println("Already in database");
+                                }
+
                                 toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
 
                             }
@@ -136,6 +154,7 @@ public class BarcodeController {
     {
         cameraSource.release();
     }
+
 
 
 
