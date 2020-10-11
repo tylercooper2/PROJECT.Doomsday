@@ -37,6 +37,8 @@ public class DatabaseAPIController {
 
                     jsonUtils.getItemValues().put(barcodeID, title);
 
+                    System.out.println("BB");
+
                 }
                 catch (JSONException e)
                 {
