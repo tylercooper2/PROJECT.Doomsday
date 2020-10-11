@@ -56,7 +56,6 @@ public class BarcodeController {
         String test = "starting";
         this.itemTitleTextBox.setText(test);
 
-        initialiseDetectorsAndSources();
     }
 
 
